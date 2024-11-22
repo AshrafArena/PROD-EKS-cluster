@@ -1,0 +1,6 @@
+apiVersion: v2
+name: threat-composer
+description: A Helm chart for deploying AWS threatComposer
+type: application
+version: 0.1.0
+appVersion: "1.0"

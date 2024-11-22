@@ -1,0 +1,23 @@
+replicaCount: 2
+
+image:
+  repository: ashrafarena/threatcomposer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: threatcomposer.achrafm.com
+      paths:
+        - /
+  tls:
+    - secretName: wildcard-achrafm-com-tls
+      hosts:
+        - threatcomposer.achrafm.com

@@ -1,0 +1,84 @@
+name: EKS Cluster Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform Plan and Apply
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      TF_VAR_cluster_name: "Threat-compose-cluster"
+      TF_VAR_cluster_version: "1.31"
+    
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.0
+
+  
+    - name: Terraform Init
+      run: terraform init
+      working-directory: terraform
+
+    - name: Terraform Plan
+      run: terraform plan -var "aws_region=${{ env.AWS_REGION }}" -var "vpc_cidr_block=10.0.0.0/16" -var "eks_cluster_name=eks-cluster" -var "eks_version=1.25"
+      working-directory: terraform
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve -var "aws_region=${{ env.AWS_REGION }}" -var "vpc_cidr_block=10.0.0.0/16" -var "eks_cluster_name=eks-cluster" -var "eks_version=1.25"
+      working-directory: terraform
+
+  security-scan:
+    name: Security Scans
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Run Checkov Scan
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: terraform
+
+    - name: Run Trivy Container Scan
+      run: |
+        trivy image your-docker-image:tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-app:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    # Step 3: Deploy Application to EKS
+    - name: Deploy App to EKS
+      run: |
+        kubectl apply -f manifests/sample-app/deployment.yaml
+        kubectl apply -f manifests/sample-app/service.yaml
+        kubectl apply -f manifests/sample-app/ingress.yaml

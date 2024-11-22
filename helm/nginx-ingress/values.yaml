@@ -1,0 +1,12 @@
+controller:
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-internal: "false"
+    type: LoadBalancer
+  replicaCount: 1  # Adjusted for your two-node cluster
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations: []
+  affinity: {}
