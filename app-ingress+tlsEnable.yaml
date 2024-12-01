@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: threat-composer-ingress
+  namespace: app-namespace
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - threatcomposer.achrafm.com
+      secretName: letsencrypt-certificate
+  rules:
+    - host: threatcomposer.achrafm.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: threat-composer
+                port:
+                  number: 80
+

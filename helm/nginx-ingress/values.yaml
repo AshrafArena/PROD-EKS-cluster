@@ -4,8 +4,9 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
       service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
       service.beta.kubernetes.io/aws-load-balancer-internal: "false"
+      external-dns.alpha.kubernetes.io/hostname: "threatcomposer.achrafm.com"
     type: LoadBalancer
-  replicaCount: 1  # Adjusted for your two-node cluster
+  replicaCount: 1 
   nodeSelector:
     kubernetes.io/os: linux
   tolerations: []

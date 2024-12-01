@@ -1,7 +1,6 @@
-provider: aws
-aws:
-  zoneType: public
-  region: eu-west-2
+pprovider: aws
+zoneType: public
+region: eu-west-2
 policy: sync
 txtOwnerId: external-dns
 resources:
@@ -13,3 +12,5 @@ resources:
     memory: 256Mi
 serviceAccount:
   create: true
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::971422696890:role/ExternalDNS-Role
