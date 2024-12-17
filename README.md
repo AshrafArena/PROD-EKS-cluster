@@ -23,14 +23,13 @@ This project focuses on deploying a **production-grade Kubernetes cluster** on A
    - **ArgoCD** is configured to enable declarative GitOps workflows for application deployment.
    - Ensures continuous delivery and synchronization of Kubernetes manifests.
 
-## Tools and Technologies Used
-| Tool/Technology   | Purpose                                |
-|-------------------|----------------------------------------|
-| **AWS EKS**       | Managed Kubernetes cluster            |
-| **Terraform**     | Infrastructure as Code                |
-| **Checkov**       | Security compliance for Terraform     |
-| **Helm**          | Kubernetes package management         |
-| **NGINX Ingress** | Traffic routing and ingress management |
-| **cert-manager**  | Automatic TLS certificate management  |
-| **External-DNS**  | DNS management with Route53           |
-| **ArgoCD**        | Declarative GitOps deployment         |
+| Tool/Tech         |  Reason                                |                                 |
+|-------------------|----------------------------------------|------------------------------------|
+| **AWS EKS**       | Managed Kubernetes cluster            | ![EKS](https://img.icons8.com/color/48/000000/amazon-web-services.png) |
+| **Terraform**     | Infrastructure as Code                | ![Terraform](https://img.icons8.com/color/48/000000/terraform.png) |
+| **Checkov**       | Security compliance for Terraform     | ![Checkov](https://img.icons8.com/color/48/000000/security.png) |
+| **Helm**          | Kubernetes package management         | ![Helm](https://img.icons8.com/color/48/000000/kubernetes.png) |
+| **NGINX Ingress** | Traffic routing and ingress management | ![NGINX](https://img.icons8.com/color/48/000000/nginx.png) |
+| **cert-manager**  | Automatic TLS certificate management  | ![Cert-manager](https://img.icons8.com/color/48/000000/certificate.png) |
+| **External-DNS**  | DNS management with Route53           | ![External-DNS](https://img.icons8.com/color/48/000000/domain.png) |
+| **ArgoCD**        | Declarative GitOps deployment         | ![ArgoCD](https://img.icons8.com/color/48/000000/flow-chart.png) |
