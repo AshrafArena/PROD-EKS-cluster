@@ -50,7 +50,7 @@ jobs:
         run: terraform apply -auto-approve
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v3
+        uses: aws/setup-kubectl@v3
         with:
           version: 'latest'
 
@@ -58,13 +58,11 @@ jobs:
         run: |
           aws eks update-kubeconfig --name your-eks-cluster-name --region $AWS_REGION
 
-      # Step 8: Install Helm
       - name: Set up Helm
         uses: azure/setup-helm@v3
         with:
           version: v3.10.0
 
-      # Step 9: Deploy cert-manager
       - name: Deploy cert-manager with Helm
         run: |
           helm repo add jetstack https://charts.jetstack.io
@@ -75,7 +73,6 @@ jobs:
           
           kubectl apply -f ./cert-manager/cluster-issuer.yaml
 
-      # Step 10: Deploy NGINX Ingress Controller
       - name: Deploy NGINX Ingress Controller
         run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -84,7 +81,6 @@ jobs:
             --namespace ingress-nginx --create-namespace \
             --values ./nginx-ingress/values.yaml
 
-      # Step 11: Deploy ExternalDNS
       - name: Deploy ExternalDNS
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -93,19 +89,12 @@ jobs:
             --namespace external-dns --create-namespace \
             --values ./external-dns/external-dns-values.yaml
 
-      # Step 12: Deploy Your Application
       - name: Deploy Application with Helm
         run: |
           helm upgrade --install threat-composer ./helm/app \
             --namespace app-namespace --create-namespace \
             --values ./helm/app/values.yaml
 
-      # Step 13: Verify Deployment
-      - name: Verify Pods Status
-        run: kubectl get pods -n app-namespace
+     
 
-      # Optional: Clean Up Terraform (if needed)
-      - name: Terraform Destroy
-        if: ${{ github.event_name == 'pull_request' }}
-        working-directory: ./terraform
-        run: terraform destroy -auto-approve
+     
